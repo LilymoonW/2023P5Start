@@ -31,6 +31,8 @@ public class MadLibs {
 				break;
 			case "V":
 				Scanner input = getInputScanner(console);
+				viewFile(input);
+				input.close();
 				break;
 			case "Q":
 				done = true;
@@ -67,6 +69,18 @@ public class MadLibs {
 
 		Scanner input = new Scanner(f);
 		return input;
+	}
+	
+	/** reads a file line by ine and prints to the console
+	 * 
+	 * @param input -- a scanner to the file
+	 */
+	public static void viewFile(Scanner input) {
+		System.out.println();
+		while(input.hasNextLine()) {
+				System.out.println(input.nextLine());
+		}
+		System.out.println();
 	}
 
 }
