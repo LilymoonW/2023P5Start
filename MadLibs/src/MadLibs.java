@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.util.Scanner;
 
 /**
@@ -26,11 +27,18 @@ public class MadLibs {
 		do {
 			System.out.print("(C)reate a mad-lib, (V)iew mad-lib, (Q)uit?");
 			String command = console.nextLine();
+			Scanner input;
+			PrintStream output;
 			switch (command.toUpperCase()) {
 			case "C":
+				input = getInputScanner(console);
+				output = getOutputPrintStream(console);
+				createMadLib(input, output, console);
+				input.close();
+				output.close();
 				break;
 			case "V":
-				Scanner input = getInputScanner(console);
+				input = getInputScanner(console);
 				viewFile(input);
 				input.close();
 				break;
@@ -52,7 +60,7 @@ public class MadLibs {
 	 * 
 	 * @param console
 	 * @return
-	 * @throws FileNotFoundException 
+	 * @throws FileNotFoundException
 	 */
 	public static Scanner getInputScanner(Scanner console) throws FileNotFoundException {
 		boolean validFile = false;
@@ -70,17 +78,63 @@ public class MadLibs {
 		Scanner input = new Scanner(f);
 		return input;
 	}
-	
-	/** reads a file line by ine and prints to the console
+
+	/**
+	 * reads a file line by ine and prints to the console
 	 * 
-	 * @param input -- a scanner to the file
+	 * @param input
+	 *            -- a scanner to the file
 	 */
 	public static void viewFile(Scanner input) {
 		System.out.println();
-		while(input.hasNextLine()) {
-				System.out.println(input.nextLine());
+		while (input.hasNextLine()) {
+			System.out.println(input.nextLine());
 		}
 		System.out.println();
 	}
 
+	/**
+	 * Reads a madlib from input and writes to an output
+	 * 
+	 * @param in
+	 * @param out
+	 * @param console
+	 */
+	public static void createMadLib(Scanner in, PrintStream out, Scanner console) {
+		out.println("Create File: To Do!");
+		while(in.hasNextLine()) {
+			String line = in.nextLine();
+			Scanner is = new Scanner(line);
+			while (is.hasNext()) {
+				String token = is.next();
+				char first = token.charAt(0);
+				char last = token.charAt(token.length()-1);
+				if(first == '<' && last == '>') {
+					String question = token.substring(1, token.length()-1);
+					System.out.print("give me a/an " + question + ": ");
+					token = console.nextLine();
+				}
+				out.print(token + " ");
+			}
+			out.println();
+		}
+	}
+	public static PrintStream getOutputPrintStream(Scanner console) {
+			boolean validF = false;
+			PrintStream ps = null;
+			do {
+					try {
+						System.out.print("Output file name: ");
+						File f = new File(console.nextLine());
+						ps = new PrintStream(f);
+						validF = true;
+					}
+					catch(FileNotFoundException e) {
+						System.out.println("File Exception "+ e);
+					}
+					
+			} while (!validF);
+			return ps;
+	}
+	
 }
