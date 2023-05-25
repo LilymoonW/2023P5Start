@@ -31,9 +31,37 @@ public class BbyNamesP5 {
 			if (name.equals("Quit")) {
 				quit = true;
 			} else {
-				System.out.println("Name: " + name);
+				//read the meaning 
+				String meaning = getMeaning(name, meanings);
+				System.out.println("Name: " + name + " Meaning: " + meaning);
+				if(meaning.equals("Not Found")) {
+					continue;
+				}
 			}
 		}
 
+	}
+	/**tries to find the meaning for a name... returns not found if not found
+	 * 
+	 * @param name
+	 * @param meanings
+	 * @return
+	 */
+	public static String getMeaning(String name, Scanner meanings) {
+		name = name.toUpperCase();
+		while(meanings.hasNextLine()) {
+			Scanner Is = new Scanner(meanings.nextLine());
+			if(name.equals(Is.next())) {
+				Is.next();
+				String meaning = "";
+				while(Is.hasNext()) {
+						meaning += Is.next() + " ";
+						
+				}
+				return meaning;
+			}
+		}
+		return "Not Found";
+		
 	}
 }
